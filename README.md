@@ -36,14 +36,9 @@ copy .env.example .env
 streamlit run app.py
 ```
 
-Put your Hugging Face token in `.env` as `HF_TOKEN`. That file is gitignored. `.env.example` only shows the names.
+By default this local page calls the same hosted Llama model as the public altar. No token is required.
 
-```
-HF_TOKEN=hf_your_token_here
-HF_MODEL=google/gemma-3-4b-it:cheapest
-```
-
-By default the page calls the hosted Llama model, with no token and no download. Set `LUMBRE_BACKEND=router` only if the Hugging Face account has Inference Providers credits.
+Set `LUMBRE_BACKEND=router` only if a Hugging Face account has Inference Providers credits. Put that token in `.env` as `HF_TOKEN`. `.env` is gitignored. `.env.example` shows the name only.
 
 ## Hosted demo
 
@@ -66,7 +61,7 @@ The script refuses to upload if a token-like string is in the source files. It n
 
 ```text
 web/                   public altar
-app.py                 same altar through the Hugging Face router
+app.py                 local Streamlit page, same hosted model
 lumbre/altar.py        facts, offerings, and gaps
 lumbre/prompts.py      instructions for the model
 lumbre/scribe.py       turns a reply into a card
@@ -74,7 +69,3 @@ lumbre/inference.py    router call, or weights when a Space can load them
 lumbre/render.py       card layout
 tests/                 offerings, parsing, and token checks
 ```
-
-## Secrets
-
-Keep `HF_TOKEN` in `.env` or in Streamlit secrets. Do not put it in source, the README, or a commit. If a token was pasted into a chat or a screenshot, revoke it on Hugging Face and create a new one.
