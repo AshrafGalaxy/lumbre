@@ -11,7 +11,7 @@ DEFAULT_ROUTER_MODEL = "google/gemma-3-4b-it:cheapest"
 DEFAULT_SPACE_MODEL = "google/gemma-3-270m-it"
 FALLBACK_SPACE_MODEL = "HuggingFaceTB/SmolLM2-360M-Instruct"
 ROUTER_URL = "https://router.huggingface.co/v1/chat/completions"
-SPACE_URL = "https://huggingface.co/spaces/Ashraf01k/lumbre"
+SPACE_URL = "https://ashraf01k-lumbre.static.hf.space"
 
 _SECRET_KEYS = ("HF_TOKEN", "HF_MODEL", "LUMBRE_MODEL", "LUMBRE_BACKEND")
 

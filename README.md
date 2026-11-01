@@ -49,7 +49,9 @@ The router call needs Inference Providers credits on the Hugging Face account. W
 
 The public altar is a static page. The first card downloads Gemma 3 270M (`onnx-community/gemma-3-270m-it-ONNX`, q4f16) into the visitor's browser and letters the card there. A Docker Space was not used, because free accounts cannot host one. The router path above is for an account that has Inference Providers credits.
 
-https://huggingface.co/spaces/Ashraf01k/lumbre
+https://ashraf01k-lumbre.static.hf.space
+
+The Space page is https://huggingface.co/spaces/Ashraf01k/lumbre. The first card downloads about 270 MB of weights into the browser. After that, the memory you type is not uploaded.
 
 Publish an update with `HF_TOKEN` in `.env` and:
 

@@ -1,29 +1,33 @@
 *This is a submission for the [Hacktoberfest Open-Source AI Challenge Week 4: Ghost in the Machine](https://dev.to/challenges/hacktoberfest-week4-2026-10-26)*
 
 ## What I Built
-<!-- What does it do, and how did you interpret the theme? What inspired it? -->
+
+Lumbre is a Día de los Muertos altar card. You type a name, a memory, and only the food, song, or object you actually know. An open-weight Gemma model writes the lines on the card. The memory you typed is kept word for word. A field you leave blank stays blank, and the model is not allowed to invent a favorite food or a story you did not tell.
 
 ## Demo
-<!-- Share a deployed link or a video demo. -->
+
+https://ashraf01k-lumbre.static.hf.space
+
+The first card downloads Gemma 3 270M into the browser. There is a fictional example on the page if you do not want to write a real name.
 
 ## Code
-<!-- Show us the code!  You can embed a GitHub repo directly into your post. -->
+
+https://github.com/AshrafGalaxy/lumbre
 
 ## How I Built It
-<!-- Which open-source AI did you use (open-weight models, agent harnesses, frameworks, local inference), and how is your project built around it? -->
+
+The public altar is a static page. It loads `onnx-community/gemma-3-270m-it-ONNX` with Transformers.js and letters the card in the browser. The offering list is built from the form, not from the model's reply.
+
+The Python package is the same scribe for a larger Gemma through the Hugging Face router (`google/gemma-3-4b-it`). That path needs Inference Providers credits. This account has none, and a free account cannot host a Docker Space, so the demo runs the small Gemma in the browser instead.
 
 ## Why Does Open Innovation Matter?
-<!-- Why does open innovation matter for what you built?  What did it make possible that a closed API wouldn't? -->
 
-## My Agent Session
-<!-- Optional, but judges love it.  Save your session with DevRelay and embed it with the agent_session tag (see the challenge page), or link to it. -->
+The weights are public, so the card is not locked to a closed chat API. The memory stays in the browser. A closed model would send that memory to a vendor's server, and the wording would disappear if the vendor changed the model or shut the endpoint down. Here the model id is one constant. The same page can point at another open instruct model.
 
 ## The Spirit of It
-<!-- Optional, but this is where you can make your post stand out.  Did it give someone chills, bring back a memory, or keep a story alive?  Show us the moment it landed.  If not, remove this section. -->
+
+The useful part is the empty space. A remembrance is worse if the model invents a song or a Sunday that never happened. Lumbre puts your words on the altar and leaves the rest quiet.
 
 ## Prize Categories
-<!-- Which partner categories are you entering?  List every one that applies, or remove this section. -->
 
-<!-- Team Submissions: Please pick one member to publish the submission and credit teammates by listing their DEV usernames directly in the body of the post. -->
-
-<!-- Thanks for participating! -->
+Best Use of Gemma
