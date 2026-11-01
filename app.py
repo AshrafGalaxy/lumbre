@@ -95,14 +95,14 @@ with right:
         st.caption("The card will appear here.")
 
 settings = load_settings()
-if settings.backend == "weights":
+if settings.backend == "router":
     st.caption(
-        f"Open weights on this Space: {settings.space_model}. "
-        "Your note is used for this card and is not stored."
+        f"Open model through the Hugging Face router: {settings.router_model}. "
+        "Your note is sent for one reply and is not stored by Lumbre."
     )
 else:
     st.caption(
-        f"Open model through the Hugging Face router: {settings.router_model}. "
+        f"Open weights: {settings.active_model}. "
         "Your note is sent for one reply and is not stored by Lumbre. "
-        f"When the account has no router credits, the public altar runs Gemma in the browser: {SPACE_URL}"
+        f"Public altar: {SPACE_URL}"
     )

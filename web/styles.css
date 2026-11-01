@@ -1,18 +1,22 @@
 :root {
   color-scheme: dark;
-  --bg: #1a100c;
-  --panel: #2c1812;
+  --bg: #120c09;
+  --panel: #24160f;
   --text: #f6ecdf;
-  --muted: #e0a15a;
-  --line: #6b4030;
-  --button: #6f2f10;
+  --muted: #d7b48a;
+  --line: #5c3b2a;
+  --button: #8a3d16;
+  --ink: #2c1812;
+  --paper: #f4ead8;
 }
 
 * { box-sizing: border-box; }
 
 body {
   margin: 0;
-  background: var(--bg);
+  background:
+    radial-gradient(ellipse at 70% 20%, rgba(180, 90, 30, 0.16), transparent 42%),
+    var(--bg);
   color: var(--text);
   font-family: "Segoe UI", sans-serif;
   line-height: 1.5;
@@ -21,52 +25,66 @@ body {
 .page {
   max-width: 1040px;
   margin: 0 auto;
-  padding: 2rem 1.25rem 3rem;
+  padding: 2.25rem 1.25rem 3rem;
 }
 
-h1, h2 { font-family: Georgia, serif; font-weight: 500; }
+h1, h2, h3 { font-family: Georgia, "Times New Roman", serif; font-weight: 500; }
 
-.intro, footer, .note, .status { max-width: 68ch; }
+h1 { margin: 0.15rem 0 0.4rem; font-size: 2.6rem; }
+
+.eyebrow {
+  margin: 0;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+.intro, footer { max-width: 66ch; }
 
 .note, .status {
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  padding: 0.75rem 1rem;
+  max-width: 66ch;
+  color: var(--muted);
 }
 
-a { color: var(--muted); }
+a { color: #e0b56a; }
 
 .layout {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5rem;
-  margin-top: 1.5rem;
+  align-items: start;
+  margin-top: 1.4rem;
 }
 
 form, .altar {
   background: var(--panel);
   border: 1px solid var(--line);
-  border-radius: 12px;
-  padding: 1rem;
+  border-radius: 16px;
 }
+
+form { padding: 1rem 1rem 1.1rem; }
 
 label {
   display: block;
-  margin: 0.8rem 0;
+  margin: 0.75rem 0;
+  color: var(--muted);
+  font-size: 0.92rem;
 }
 
 input, textarea {
   display: block;
   width: 100%;
-  margin-top: 0.3rem;
-  padding: 0.55rem 0.7rem;
+  margin-top: 0.28rem;
+  padding: 0.6rem 0.7rem;
   border-radius: 8px;
   border: 1px solid var(--line);
-  background: #1a100c;
+  background: #160e0b;
   color: var(--text);
   font: inherit;
 }
+
+input::placeholder { color: #8d715c; }
 
 button {
   background: var(--button);
@@ -78,44 +96,66 @@ button {
   cursor: pointer;
 }
 
-button:disabled { opacity: 0.6; cursor: wait; }
+button:disabled { opacity: 0.65; cursor: wait; }
 
-#light { width: 100%; margin-top: 0.4rem; }
+#example {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--line);
+}
 
-.flames {
+#light { width: 100%; margin-top: 0.3rem; }
+
+.altar { overflow: hidden; padding-bottom: 1rem; }
+
+.picado {
+  height: 16px;
+  background:
+    linear-gradient(135deg, #c4472a 25%, transparent 25%) 0 0 / 16px 16px,
+    linear-gradient(225deg, #c4472a 25%, transparent 25%) 0 0 / 16px 16px,
+    #e7a23a;
+}
+
+.offering {
   display: flex;
+  align-items: flex-end;
   justify-content: center;
-  gap: 1.4rem;
-  padding-top: 0.4rem;
+  gap: 1.1rem;
+  padding: 0.85rem 1rem 0.35rem;
 }
 
-.flames span {
-  width: 12px;
-  height: 26px;
-  border-radius: 50% 50% 42% 42%;
-  background: #f2c14e;
+.marigold { width: 62px; height: 62px; }
+.candle { width: 58px; height: 108px; }
+
+.paper {
+  margin: 0.35rem 1rem 0;
+  background: var(--paper);
+  color: var(--ink);
+  padding: 1.2rem 1.25rem 1.15rem;
+  border-radius: 2px;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.28);
 }
 
-.flames .tall { width: 16px; height: 36px; background: #ffb347; }
-
-.kicker {
-  text-align: center;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--muted);
-  font-size: 0.75rem;
+.paper h2 { margin: 0 0 0.15rem; font-size: 1.8rem; }
+.paper h3 { margin: 1rem 0 0.2rem; font-size: 1rem; }
+.paper p { margin: 0.45rem 0; }
+.paper .waiting, .paper .meta, .paper .small { color: #7a5340; }
+.paper .inscription {
+  font-family: Georgia, "Times New Roman", serif;
+  font-style: italic;
+  font-size: 1.18rem;
+  line-height: 1.45;
+}
+.paper button {
+  background: transparent;
+  color: #6f2f10;
+  border: 1px solid #c4a484;
+  margin-top: 0.8rem;
 }
 
-.waiting { color: var(--muted); }
-
-.inscription { font-family: Georgia, serif; font-size: 1.25rem; }
-
-.card h2 { margin-bottom: 0.2rem; }
-
-.meta, .small { color: var(--muted); font-size: 0.92rem; }
-
-footer { margin-top: 2rem; }
+footer { margin-top: 1.8rem; color: var(--muted); }
 
 @media (max-width: 800px) {
   .layout { grid-template-columns: 1fr; }
+  h1 { font-size: 2.2rem; }
 }

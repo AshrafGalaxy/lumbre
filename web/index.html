@@ -9,11 +9,12 @@
   <body>
     <main class="page">
       <header>
+        <p class="eyebrow">Día de los Muertos</p>
         <h1>Lumbre</h1>
         <p class="intro">
-          Write what you know about someone you want to remember. Gemma 3, an
-          open-weight model, letters the card in this browser. Food, a song, and
-          an object are placed only if you name them. A blank stays blank.
+          Write what you know. An open-weight model letters the card in a few
+          seconds. Food, a song, and an object are placed only if you name them.
+          A blank stays blank.
         </p>
       </header>
 
@@ -21,14 +22,14 @@
         Rosa Mendoza is fictional. She is here so the altar can be tried before
         a real name is written.
       </p>
-      <p id="status" class="status" role="status">The open model has not been loaded yet.</p>
+      <p id="status" class="status" role="status">A card takes a few seconds. Nothing is downloaded.</p>
 
       <div class="layout">
         <form id="altar-form">
           <button id="example" type="button">Try a fictional altar</button>
-          <label>Name <input id="name" name="name" required /></label>
+          <label>Name <input id="name" name="name" autocomplete="name" required /></label>
           <label>How you knew them <input id="relationship" name="relationship" /></label>
-          <label>Years <input id="years" name="years" /></label>
+          <label>Years <input id="years" name="years" placeholder="1936–2014" /></label>
           <label>A memory <textarea id="memory" name="memory" rows="6" required></textarea></label>
           <label>Favorite food <input id="food" name="food" /></label>
           <label>A song or phrase <input id="song" name="song" /></label>
@@ -37,21 +38,75 @@
         </form>
 
         <section class="altar" aria-live="polite">
-          <div class="flames" aria-hidden="true">
-            <span></span><span class="tall"></span><span></span>
+          <div class="picado" aria-hidden="true"></div>
+          <div class="offering" aria-hidden="true">
+            <svg class="marigold" viewBox="0 0 80 80">
+              <g fill="#e07a1a">
+                <ellipse cx="40" cy="16" rx="8" ry="14" />
+                <ellipse cx="40" cy="16" rx="8" ry="14" transform="rotate(45 40 40)" />
+                <ellipse cx="40" cy="16" rx="8" ry="14" transform="rotate(90 40 40)" />
+                <ellipse cx="40" cy="16" rx="8" ry="14" transform="rotate(135 40 40)" />
+              </g>
+              <g fill="#f2c14e">
+                <ellipse cx="40" cy="22" rx="6" ry="10" />
+                <ellipse cx="40" cy="22" rx="6" ry="10" transform="rotate(45 40 40)" />
+                <ellipse cx="40" cy="22" rx="6" ry="10" transform="rotate(90 40 40)" />
+                <ellipse cx="40" cy="22" rx="6" ry="10" transform="rotate(135 40 40)" />
+              </g>
+              <circle cx="40" cy="40" r="7" fill="#6b2e12" />
+            </svg>
+            <svg class="candle" viewBox="0 0 80 120">
+              <defs>
+                <linearGradient id="flame" x1="0" y1="1" x2="0" y2="0">
+                  <stop offset="0" stop-color="#d8651a" />
+                  <stop offset="0.5" stop-color="#f0b429" />
+                  <stop offset="1" stop-color="#fff4d2" />
+                </linearGradient>
+                <linearGradient id="wax" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0" stop-color="#e7d3b4" />
+                  <stop offset="0.45" stop-color="#f8f1e4" />
+                  <stop offset="1" stop-color="#d9c4a4" />
+                </linearGradient>
+                <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+                  <feGaussianBlur stdDeviation="2.2" />
+                </filter>
+              </defs>
+              <ellipse cx="40" cy="34" rx="14" ry="18" fill="#ffb15a" opacity="0.45" filter="url(#glow)" />
+              <path d="M40 8c6 10 14 16 10 28-2 6-8 10-10 10s-8-4-10-10C26 24 34 18 40 8z" fill="url(#flame)" />
+              <path d="M40 16c3 6 6 9 4 15-1 3-3 4-4 4s-3-1-4-4c-2-6 1-9 4-15z" fill="#fff6df" opacity="0.9" />
+              <line x1="40" y1="46" x2="40" y2="54" stroke="#3a2a22" stroke-width="1.4" />
+              <rect x="27" y="54" width="26" height="54" rx="3" fill="url(#wax)" />
+              <ellipse cx="40" cy="54" rx="13" ry="5" fill="#fff8ee" />
+            </svg>
+            <svg class="marigold" viewBox="0 0 80 80">
+              <g fill="#d86a16">
+                <ellipse cx="40" cy="16" rx="7" ry="13" />
+                <ellipse cx="40" cy="16" rx="7" ry="13" transform="rotate(45 40 40)" />
+                <ellipse cx="40" cy="16" rx="7" ry="13" transform="rotate(90 40 40)" />
+                <ellipse cx="40" cy="16" rx="7" ry="13" transform="rotate(135 40 40)" />
+              </g>
+              <g fill="#f6c85f">
+                <ellipse cx="40" cy="23" rx="5" ry="9" />
+                <ellipse cx="40" cy="23" rx="5" ry="9" transform="rotate(60 40 40)" />
+                <ellipse cx="40" cy="23" rx="5" ry="9" transform="rotate(120 40 40)" />
+              </g>
+              <circle cx="40" cy="40" r="6" fill="#7a3414" />
+            </svg>
           </div>
-          <p class="kicker">Marigolds and a flame</p>
-          <div id="card">
-            <p class="waiting">The card will appear here.</p>
+          <div class="paper">
+            <div id="card">
+              <p class="waiting">The card will appear here.</p>
+            </div>
           </div>
         </section>
       </div>
 
       <footer>
         <p>
-          The model is
-          <a href="https://huggingface.co/onnx-community/gemma-3-270m-it-ONNX">onnx-community/gemma-3-270m-it-ONNX</a>.
-          Your note stays in this browser. The weights are public and are downloaded from Hugging Face.
+          Lettered by
+          <a href="https://huggingface.co/meta-llama/Llama-3.3-70B-Instruct">Llama 3.3 70B Instruct</a>,
+          an open-weight model, hosted so the page does not download it.
+          Your note is sent once for the reply. Lumbre does not store it.
           Code: <a href="https://github.com/AshrafGalaxy/lumbre">AshrafGalaxy/lumbre</a>.
         </p>
       </footer>

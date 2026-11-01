@@ -10,7 +10,9 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_ROUTER_MODEL = "google/gemma-3-4b-it:cheapest"
 DEFAULT_SPACE_MODEL = "google/gemma-3-270m-it"
 FALLBACK_SPACE_MODEL = "HuggingFaceTB/SmolLM2-360M-Instruct"
+HOSTED_MODEL = "Meta-Llama-3_3-70B-Instruct"
 ROUTER_URL = "https://router.huggingface.co/v1/chat/completions"
+HOSTED_URL = "https://oai.endpoints.kepler.ai.cloud.ovh.net/v1/chat/completions"
 SPACE_URL = "https://ashraf01k-lumbre.static.hf.space"
 
 _SECRET_KEYS = ("HF_TOKEN", "HF_MODEL", "LUMBRE_MODEL", "LUMBRE_BACKEND")
@@ -27,7 +29,9 @@ class Settings:
     def active_model(self) -> str:
         if self.backend == "weights":
             return self.space_model
-        return self.router_model
+        if self.backend == "router":
+            return self.router_model
+        return HOSTED_MODEL
 
 
 def load_settings() -> Settings:
@@ -43,11 +47,9 @@ def load_settings() -> Settings:
 
 def _backend() -> str:
     chosen = os.getenv("LUMBRE_BACKEND", "").strip().lower()
-    if chosen in {"weights", "router"}:
+    if chosen in {"weights", "router", "hosted"}:
         return chosen
-    if os.getenv("SPACE_ID"):
-        return "weights"
-    return "router"
+    return "hosted"
 
 
 def _copy_streamlit_secrets() -> None:

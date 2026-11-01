@@ -1,28 +1,28 @@
 # Lumbre
 
-Lumbre letters a Día de los Muertos altar card. You write a name, a memory, and only the foods, songs, and objects you actually know. An open-weight Gemma model writes the lines on the card. Anything you leave blank stays blank.
+Lumbre letters a Día de los Muertos altar card. You write a name, a memory, and only the foods, songs, and objects you actually know. Llama 3.3 70B, an open-weight model, writes the lines on the card. Anything you leave blank stays blank.
 
 The memory you typed is kept word for word. The offering list is built in code from those fields, so the model cannot add a favorite food you never named.
 
 ## Why open weights
 
-Gemma's weights are public. The altar downloads a small Gemma into the browser and writes the card there, so the memory is not sent to a chat API. The Python page can call a larger Gemma through the Hugging Face router when that account has credits, by changing the model id. A closed model would send the memory to a vendor's server and lock the wording to that vendor.
+Llama 3.3's weights are public. The altar calls that model on a host, so a card comes back in a few seconds and the page does not download hundreds of megabytes. The model id is one constant, so it can be swapped for another open instruct model. A closed API would lock the wording to one vendor.
 
 ## Architecture
 
 ```mermaid
 flowchart TD
-    visitor[Visitor] --> page[Browser altar]
+    visitor[Visitor] --> page[Altar page]
     page --> facts[Altar facts]
-    facts --> scribe[Scribe in the page]
-    scribe --> gemma[Gemma 3 270M open weights]
-    gemma --> prose[Inscription and remembrance]
+    facts --> scribe[Scribe]
+    scribe --> llama[Llama 3.3 70B open weights]
+    llama --> prose[Inscription and remembrance]
     facts --> card[Altar card]
     prose --> card
     card --> page
 ```
 
-The facts also go straight onto the card: the name, the years, the memory as told, and the offerings. The model only writes the inscription and the remembrance. The weights download into the browser from Hugging Face. The note is not uploaded.
+The facts also go straight onto the card: the name, the years, the memory as told, and the offerings. The model only writes the inscription and the remembrance. The note is sent once for that reply.
 
 ## Run it on a laptop
 
@@ -43,15 +43,15 @@ HF_TOKEN=hf_your_token_here
 HF_MODEL=google/gemma-3-4b-it:cheapest
 ```
 
-The router call needs Inference Providers credits on the Hugging Face account. Without credits, open `web/index.html` or the public Space. That page runs Gemma in the browser.
+By default the page calls the hosted Llama model, with no token and no download. Set `LUMBRE_BACKEND=router` only if the Hugging Face account has Inference Providers credits.
 
 ## Hosted demo
 
-The public altar is a static page. The first card downloads Gemma 3 270M (`onnx-community/gemma-3-270m-it-ONNX`, q4f16) into the visitor's browser and letters the card there. A Docker Space was not used, because free accounts cannot host one. The router path above is for an account that has Inference Providers credits.
+The public altar calls Llama 3.3 70B Instruct. A card takes a few seconds. The browser does not download the weights.
 
 https://ashraf01k-lumbre.static.hf.space
 
-The Space page is https://huggingface.co/spaces/Ashraf01k/lumbre. The first card downloads about 270 MB of weights into the browser. After that, the memory you type is not uploaded.
+The Space page is https://huggingface.co/spaces/Ashraf01k/lumbre.
 
 Publish an update with `HF_TOKEN` in `.env` and:
 
@@ -65,7 +65,7 @@ The script refuses to upload if a token-like string is in the source files. It n
 ## Layout
 
 ```text
-web/                   public altar, Gemma in the browser
+web/                   public altar
 app.py                 same altar through the Hugging Face router
 lumbre/altar.py        facts, offerings, and gaps
 lumbre/prompts.py      instructions for the model

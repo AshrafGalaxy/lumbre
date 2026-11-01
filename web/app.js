@@ -1,9 +1,8 @@
-// Browser scribe. Offerings are taken from the form, never from the model.
+// Offerings are taken from the form, never from the model.
 // The prompt matches lumbre/prompts.py.
 
-import { pipeline } from "https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.8.1";
-
-const MODEL = "onnx-community/gemma-3-270m-it-ONNX";
+const ENDPOINT = "https://oai.endpoints.kepler.ai.cloud.ovh.net/v1/chat/completions";
+const MODEL = "Meta-Llama-3_3-70B-Instruct";
 
 const SYSTEM = `You letter a card for a Día de los Muertos altar.
 Use only the facts in the visitor's note.
@@ -49,7 +48,6 @@ const status = document.querySelector("#status");
 const card = document.querySelector("#card");
 const exampleNote = document.querySelector("#example-note");
 const light = document.querySelector("#light");
-let generator = null;
 
 document.querySelector("#example").addEventListener("click", () => {
   for (const [key, value] of Object.entries(EXAMPLE)) fields[key].value = value;
@@ -70,13 +68,12 @@ document.querySelector("#altar-form").addEventListener("submit", async (event) =
     return;
   }
   light.disabled = true;
+  status.textContent = "Lettering the card.";
   try {
-    const model = await loadModel();
-    status.textContent = "Lettering the card. On this computer that can take a minute.";
-    const raw = await letter(model, altar);
+    const raw = await letter(altar);
     const [inscription, remembrance] = parseCard(raw);
     showCard(altar, inscription, remembrance);
-    status.textContent = `Lettered by ${MODEL}. Nothing was stored.`;
+    status.textContent = "The card is ready. It was not stored.";
   } catch (error) {
     status.textContent = error instanceof Error ? error.message : "The card was not lettered.";
   } finally {
@@ -92,29 +89,33 @@ function readAltar() {
   return altar;
 }
 
-async function loadModel() {
-  if (generator) return generator;
-  status.textContent = "Loading Gemma 3 into this browser.";
-  generator = await pipeline("text-generation", MODEL, {
-    dtype: "q4f16",
-    device: "wasm",
-    progress_callback: (info) => {
-      if (info.status === "progress" && Number.isFinite(info.progress)) {
-        status.textContent = `Loading Gemma 3… ${Math.round(info.progress)}%`;
-      }
-    },
-  });
-  return generator;
-}
-
-async function letter(model, altar) {
-  const output = await model(
-    [
-      { role: "user", content: `${SYSTEM}\n\nLetter the card from this note.\n\n${note(altar)}` },
-    ],
-    { max_new_tokens: 160, do_sample: false },
-  );
-  return replyText(output);
+async function letter(altar) {
+  let response;
+  try {
+    response = await fetch(ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: MODEL,
+        messages: [
+          { role: "system", content: SYSTEM },
+          { role: "user", content: `Letter the card from this note.\n\n${note(altar)}` },
+        ],
+        temperature: 0.2,
+        max_tokens: 280,
+      }),
+    });
+  } catch {
+    throw new Error("The model host could not be reached.");
+  }
+  if (response.status === 429) {
+    throw new Error("The host allows two cards a minute. Wait a moment and try again.");
+  }
+  if (!response.ok) throw new Error("The model host did not return a card.");
+  const payload = await response.json();
+  const text = payload?.choices?.[0]?.message?.content?.trim();
+  if (!text) throw new Error("The model returned an empty card.");
+  return text;
 }
 
 function note(altar) {
@@ -127,16 +128,6 @@ function note(altar) {
     `Song or phrase: ${altar.song || "not given"}`,
     `Object: ${altar.object || "not given"}`,
   ].join("\n");
-}
-
-function replyText(output) {
-  const generated = output?.[0]?.generated_text;
-  if (typeof generated === "string") return generated;
-  if (Array.isArray(generated)) {
-    const last = generated[generated.length - 1];
-    return typeof last?.content === "string" ? last.content : "";
-  }
-  return "";
 }
 
 function parseCard(raw) {

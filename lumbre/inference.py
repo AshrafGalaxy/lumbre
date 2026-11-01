@@ -6,7 +6,13 @@ from typing import Any
 
 import requests
 
-from lumbre.config import FALLBACK_SPACE_MODEL, ROUTER_URL, SPACE_URL, Settings
+from lumbre.config import (
+    FALLBACK_SPACE_MODEL,
+    HOSTED_MODEL,
+    HOSTED_URL,
+    ROUTER_URL,
+    Settings,
+)
 
 _LOCK = threading.Lock()
 _WEIGHTS: dict[str, Any] = {}
@@ -19,7 +25,41 @@ class InferenceError(Exception):
 def generate(system: str, user: str, settings: Settings) -> tuple[str, str]:
     if settings.backend == "weights":
         return _generate_weights(system, user, settings)
-    return _generate_router(system, user, settings)
+    if settings.backend == "router":
+        return _generate_router(system, user, settings)
+    return _generate_hosted(system, user)
+
+
+def _generate_hosted(system: str, user: str) -> tuple[str, str]:
+    try:
+        response = requests.post(
+            HOSTED_URL,
+            json={
+                "model": HOSTED_MODEL,
+                "messages": [
+                    {"role": "system", "content": system},
+                    {"role": "user", "content": user},
+                ],
+                "temperature": 0.2,
+                "max_tokens": 280,
+            },
+            timeout=45,
+        )
+    except requests.RequestException as exc:
+        raise InferenceError("The model host could not be reached.") from exc
+    if response.status_code == 429:
+        raise InferenceError("The host allows two cards a minute. Wait a moment and try again.")
+    if response.status_code >= 400:
+        raise InferenceError(f"The model host returned {response.status_code}.")
+    try:
+        payload = response.json()
+        text = str(payload["choices"][0]["message"].get("content") or "").strip()
+    except (KeyError, IndexError, TypeError, ValueError) as exc:
+        raise InferenceError("The model host returned an unexpected reply.") from exc
+    if not text:
+        raise InferenceError("The model returned an empty reply.")
+    model = str(payload.get("model") or HOSTED_MODEL)
+    return text, model
 
 
 def _generate_router(system: str, user: str, settings: Settings) -> tuple[str, str]:
@@ -48,7 +88,7 @@ def _generate_router(system: str, user: str, settings: Settings) -> tuple[str, s
     if response.status_code == 402:
         raise InferenceError(
             "This Hugging Face account has no Inference Providers credits. "
-            f"The public altar runs Gemma in the browser: {SPACE_URL}"
+            "Leave LUMBRE_BACKEND unset to use the hosted open model."
         )
     if response.status_code >= 400:
         detail = _safe_detail(response.text, settings.hf_token)

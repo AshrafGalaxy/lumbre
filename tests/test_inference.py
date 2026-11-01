@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import patch
 
-from lumbre.config import Settings
+from lumbre.config import HOSTED_URL, Settings
 from lumbre.inference import InferenceError, _safe_detail, generate
 
 
@@ -46,6 +46,31 @@ class InferenceTests(unittest.TestCase):
         message = str(caught.exception)
         self.assertNotIn("secret-token", message)
         self.assertIn("[token]", message)
+
+    def test_hosted_call_sends_no_token(self) -> None:
+        class Response:
+            status_code = 200
+            text = ""
+
+            def json(self) -> dict:
+                return {
+                    "model": "Meta-Llama-3_3-70B-Instruct",
+                    "choices": [{"message": {"content": "INSCRIPTION: For Rosa.\nREMEMBRANCE: She waited."}}],
+                }
+
+        settings = Settings(
+            hf_token="secret-token",
+            router_model="google/gemma-3-4b-it:cheapest",
+            space_model="google/gemma-3-270m-it",
+            backend="hosted",
+        )
+        with patch("lumbre.inference.requests.post", return_value=Response()) as post:
+            text, model = generate("system", "note", settings)
+        self.assertIn("Rosa", text)
+        self.assertEqual(model, "Meta-Llama-3_3-70B-Instruct")
+        self.assertEqual(post.call_args.args[0], HOSTED_URL)
+        headers = post.call_args.kwargs.get("headers") or {}
+        self.assertNotIn("Authorization", headers)
 
 
 if __name__ == "__main__":
