@@ -50,7 +50,7 @@ The router call needs Inference Providers credits on the Hugging Face account. W
 
 ## Hosted demo
 
-The Space runs `google/gemma-3-270m-it` on Hugging Face hardware. If that model cannot be loaded, it falls back to `HuggingFaceTB/SmolLM2-360M-Instruct`, and the card names whichever model answered.
+The Space is a container on Hugging Face. It runs this page and loads `google/gemma-3-270m-it` there, so the weights stay off your laptop. If that model cannot be loaded, it falls back to `HuggingFaceTB/SmolLM2-360M-Instruct`, and the card names whichever model answered.
 
 https://huggingface.co/spaces/Ashraf01k/lumbre
 

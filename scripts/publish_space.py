@@ -11,15 +11,13 @@ ROOT = Path(__file__).resolve().parents[1]
 TOKEN = re.compile(r"hf_[A-Za-z0-9]{25,}")
 HEADER = """---
 title: Lumbre
-emoji: 🕯️
+emoji: "🕯️"
 colorFrom: red
 colorTo: yellow
-sdk: streamlit
-sdk_version: 1.66.1
-app_file: app.py
+sdk: docker
+app_port: 7860
 pinned: false
 license: mit
-python_version: "3.11"
 ---
 
 """
@@ -54,7 +52,7 @@ def main() -> int:
         api.create_repo(
             repo_id,
             repo_type="space",
-            space_sdk="streamlit",
+            space_sdk="docker",
             exist_ok=True,
             private=False,
         )
