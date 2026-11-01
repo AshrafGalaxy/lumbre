@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Lumbre</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="page">
+      <header>
+        <h1>Lumbre</h1>
+        <p class="intro">
+          Write what you know about someone you want to remember. Gemma 3, an
+          open-weight model, letters the card in this browser. Food, a song, and
+          an object are placed only if you name them. A blank stays blank.
+        </p>
+      </header>
+
+      <p id="example-note" class="note" hidden>
+        Rosa Mendoza is fictional. She is here so the altar can be tried before
+        a real name is written.
+      </p>
+      <p id="status" class="status" role="status">The open model has not been loaded yet.</p>
+
+      <div class="layout">
+        <form id="altar-form">
+          <button id="example" type="button">Try a fictional altar</button>
+          <label>Name <input id="name" name="name" required /></label>
+          <label>How you knew them <input id="relationship" name="relationship" /></label>
+          <label>Years <input id="years" name="years" /></label>
+          <label>A memory <textarea id="memory" name="memory" rows="6" required></textarea></label>
+          <label>Favorite food <input id="food" name="food" /></label>
+          <label>A song or phrase <input id="song" name="song" /></label>
+          <label>An object <input id="object" name="object" /></label>
+          <button id="light" type="submit">Light the altar</button>
+        </form>
+
+        <section class="altar" aria-live="polite">
+          <div class="flames" aria-hidden="true">
+            <span></span><span class="tall"></span><span></span>
+          </div>
+          <p class="kicker">Marigolds and a flame</p>
+          <div id="card">
+            <p class="waiting">The card will appear here.</p>
+          </div>
+        </section>
+      </div>
+
+      <footer>
+        <p>
+          The model is
+          <a href="https://huggingface.co/onnx-community/gemma-3-270m-it-ONNX">onnx-community/gemma-3-270m-it-ONNX</a>.
+          Your note stays in this browser. The weights are public and are downloaded from Hugging Face.
+          Code: <a href="https://github.com/AshrafGalaxy/lumbre">AshrafGalaxy/lumbre</a>.
+        </p>
+      </footer>
+    </main>
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>

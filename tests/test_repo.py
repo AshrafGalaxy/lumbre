@@ -5,7 +5,7 @@ from pathlib import Path
 TOKEN = re.compile(r"hf_[A-Za-z0-9]{25,}")
 ROOT = Path(__file__).resolve().parents[1]
 SKIP_PARTS = {".venv", ".git", "__pycache__", ".pytest_cache"}
-TEXT_SUFFIXES = {".py", ".md", ".toml", ".txt", ".example"}
+TEXT_SUFFIXES = {".py", ".md", ".toml", ".txt", ".example", ".js", ".css", ".html"}
 
 
 class RepoTests(unittest.TestCase):

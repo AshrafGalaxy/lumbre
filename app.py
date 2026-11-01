@@ -104,5 +104,5 @@ else:
     st.caption(
         f"Open model through the Hugging Face router: {settings.router_model}. "
         "Your note is sent for one reply and is not stored by Lumbre. "
-        f"When the account has no router credits, the Space runs the weights: {SPACE_URL}"
+        f"When the account has no router credits, the public altar runs Gemma in the browser: {SPACE_URL}"
     )

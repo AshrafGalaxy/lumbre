@@ -48,7 +48,7 @@ def _generate_router(system: str, user: str, settings: Settings) -> tuple[str, s
     if response.status_code == 402:
         raise InferenceError(
             "This Hugging Face account has no Inference Providers credits. "
-            f"The public altar runs the open weights here: {SPACE_URL}"
+            f"The public altar runs Gemma in the browser: {SPACE_URL}"
         )
     if response.status_code >= 400:
         detail = _safe_detail(response.text, settings.hf_token)

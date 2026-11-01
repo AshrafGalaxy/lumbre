@@ -6,26 +6,23 @@ The memory you typed is kept word for word. The offering list is built in code f
 
 ## Why open weights
 
-Gemma's weights are public. Lumbre is not tied to one closed chat API. The same scribe can call a larger Gemma through the Hugging Face router, or load a small Gemma on a Hugging Face Space, by changing a model id. The laptop does not download the weights. On the Space they stay on Hugging Face's machines. A note is sent only for that one reply, and Lumbre does not store it.
+Gemma's weights are public. The altar downloads a small Gemma into the browser and writes the card there, so the memory is not sent to a chat API. The Python page can call a larger Gemma through the Hugging Face router when that account has credits, by changing the model id. A closed model would send the memory to a vendor's server and lock the wording to that vendor.
 
 ## Architecture
 
 ```mermaid
 flowchart TD
-    visitor[Visitor] --> page[Altar page]
+    visitor[Visitor] --> page[Browser altar]
     page --> facts[Altar facts]
-    facts --> scribe[Scribe]
-    scribe --> host{Where the model runs}
-    host -->|Laptop, when the account has credits| router[Hugging Face router to Gemma]
-    host -->|Space| weights[Gemma open weights on the Space]
-    router --> prose[Inscription and remembrance]
-    weights --> prose
+    facts --> scribe[Scribe in the page]
+    scribe --> gemma[Gemma 3 270M open weights]
+    gemma --> prose[Inscription and remembrance]
     facts --> card[Altar card]
     prose --> card
     card --> page
 ```
 
-The facts also go straight onto the card: the name, the years, the memory as told, and the offerings. The model only writes the inscription and the remembrance.
+The facts also go straight onto the card: the name, the years, the memory as told, and the offerings. The model only writes the inscription and the remembrance. The weights download into the browser from Hugging Face. The note is not uploaded.
 
 ## Run it on a laptop
 
@@ -46,11 +43,11 @@ HF_TOKEN=hf_your_token_here
 HF_MODEL=google/gemma-3-4b-it:cheapest
 ```
 
-The router call needs Inference Providers credits on the Hugging Face account. Without credits, the public demo is the Space, which loads the weights itself.
+The router call needs Inference Providers credits on the Hugging Face account. Without credits, open `web/index.html` or the public Space. That page runs Gemma in the browser.
 
 ## Hosted demo
 
-The Space is a container on Hugging Face. It runs this page and loads `google/gemma-3-270m-it` there, so the weights stay off your laptop. If that model cannot be loaded, it falls back to `HuggingFaceTB/SmolLM2-360M-Instruct`, and the card names whichever model answered.
+The public altar is a static page. The first card downloads Gemma 3 270M (`onnx-community/gemma-3-270m-it-ONNX`, q4f16) into the visitor's browser and letters the card there. A Docker Space was not used, because free accounts cannot host one. The router path above is for an account that has Inference Providers credits.
 
 https://huggingface.co/spaces/Ashraf01k/lumbre
 
@@ -66,11 +63,12 @@ The script refuses to upload if a token-like string is in the source files. It n
 ## Layout
 
 ```text
-app.py                 altar page
+web/                   public altar, Gemma in the browser
+app.py                 same altar through the Hugging Face router
 lumbre/altar.py        facts, offerings, and gaps
 lumbre/prompts.py      instructions for the model
 lumbre/scribe.py       turns a reply into a card
-lumbre/inference.py    router call, or weights on the Space
+lumbre/inference.py    router call, or weights when a Space can load them
 lumbre/render.py       card layout
 tests/                 offerings, parsing, and token checks
 ```

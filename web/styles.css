@@ -1,0 +1,121 @@
+:root {
+  color-scheme: dark;
+  --bg: #1a100c;
+  --panel: #2c1812;
+  --text: #f6ecdf;
+  --muted: #e0a15a;
+  --line: #6b4030;
+  --button: #6f2f10;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Segoe UI", sans-serif;
+  line-height: 1.5;
+}
+
+.page {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 2rem 1.25rem 3rem;
+}
+
+h1, h2 { font-family: Georgia, serif; font-weight: 500; }
+
+.intro, footer, .note, .status { max-width: 68ch; }
+
+.note, .status {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+}
+
+a { color: var(--muted); }
+
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+form, .altar {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+label {
+  display: block;
+  margin: 0.8rem 0;
+}
+
+input, textarea {
+  display: block;
+  width: 100%;
+  margin-top: 0.3rem;
+  padding: 0.55rem 0.7rem;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: #1a100c;
+  color: var(--text);
+  font: inherit;
+}
+
+button {
+  background: var(--button);
+  color: white;
+  border: 0;
+  border-radius: 8px;
+  padding: 0.7rem 1rem;
+  font: inherit;
+  cursor: pointer;
+}
+
+button:disabled { opacity: 0.6; cursor: wait; }
+
+#light { width: 100%; margin-top: 0.4rem; }
+
+.flames {
+  display: flex;
+  justify-content: center;
+  gap: 1.4rem;
+  padding-top: 0.4rem;
+}
+
+.flames span {
+  width: 12px;
+  height: 26px;
+  border-radius: 50% 50% 42% 42%;
+  background: #f2c14e;
+}
+
+.flames .tall { width: 16px; height: 36px; background: #ffb347; }
+
+.kicker {
+  text-align: center;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+.waiting { color: var(--muted); }
+
+.inscription { font-family: Georgia, serif; font-size: 1.25rem; }
+
+.card h2 { margin-bottom: 0.2rem; }
+
+.meta, .small { color: var(--muted); font-size: 0.92rem; }
+
+footer { margin-top: 2rem; }
+
+@media (max-width: 800px) {
+  .layout { grid-template-columns: 1fr; }
+}

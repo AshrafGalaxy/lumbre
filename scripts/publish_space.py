@@ -14,8 +14,7 @@ title: Lumbre
 emoji: "🕯️"
 colorFrom: red
 colorTo: yellow
-sdk: docker
-app_port: 7860
+sdk: static
 pinned: false
 license: mit
 ---
@@ -52,27 +51,16 @@ def main() -> int:
         api.create_repo(
             repo_id,
             repo_type="space",
-            space_sdk="docker",
+            space_sdk="static",
             exist_ok=True,
             private=False,
         )
         api.upload_folder(
             repo_id=repo_id,
             repo_type="space",
-            folder_path=str(ROOT),
-            ignore_patterns=[
-                ".env",
-                ".env.*",
-                ".venv/**",
-                ".git/**",
-                "**/__pycache__/**",
-                ".pytest_cache/**",
-                "tests/**",
-                "scripts/**",
-                "sub.md",
-                "README.md",
-            ],
-            commit_message="Publish the altar page",
+            folder_path=str(ROOT / "web"),
+            ignore_patterns=["README.md"],
+            commit_message="Publish the browser altar",
         )
         readme = HEADER + (ROOT / "README.md").read_text(encoding="utf-8")
         api.upload_file(
@@ -94,7 +82,7 @@ def _leaked_files() -> list[str]:
     for path in ROOT.rglob("*"):
         if not path.is_file() or _ignored(path):
             continue
-        if path.suffix not in {".py", ".md", ".toml", ".txt"} and path.name != ".env.example":
+        if path.suffix not in {".py", ".md", ".toml", ".txt", ".js", ".css", ".html"} and path.name != ".env.example":
             continue
         if TOKEN.search(path.read_text(encoding="utf-8")):
             found.append(str(path.relative_to(ROOT)))
