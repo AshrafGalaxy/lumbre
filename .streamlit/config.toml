@@ -1,0 +1,13 @@
+[theme]
+base = "dark"
+primaryColor = "#6f2f10"
+backgroundColor = "#1a100c"
+secondaryBackgroundColor = "#2c1812"
+textColor = "#f6ecdf"
+linkColor = "#e0a15a"
+borderColor = "#6b4030"
+baseRadius = "12px"
+font = "sans-serif"
+headingFont = "serif"
+showWidgetBorder = true
+paddingTop = "1.5rem"

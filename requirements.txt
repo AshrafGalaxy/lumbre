@@ -1,0 +1,11 @@
+# The Hugging Face Space installs this file and runs the open model there.
+# On a laptop, install only streamlit, python-dotenv, and requests.
+--extra-index-url https://download.pytorch.org/whl/cpu
+streamlit==1.66.1
+python-dotenv==1.2.4
+requests==2.34.2
+transformers>=4.56
+torch
+sentencepiece
+protobuf
+accelerate
